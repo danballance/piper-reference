@@ -1,0 +1,36 @@
+# Devenv
+.devenv*
+devenv.local.nix
+
+# direnv
+.direnv
+
+# pre-commit
+.pre-commit-config.yaml
+.aider*
+
+.coverage
+
+__pycache__/
+.pycache/
+.pytest_cache/
+*.egg-info/
+
+results.db
+
+logs/
+
+ui/dist/
+*node_modules*
+*.db
+
+# Secrets
+.env
+
+# Runtime data (Docker-created, root-owned staging dirs)
+data/
+
+# Worktrees
+.worktrees/
+
+.complexipy_cache/
