@@ -33,3 +33,11 @@
 - Aim for elegant, composable, orthogonal, pluggable BaseModeligns.
 - Avoid complexity - complexity is the software killer.
 - Never use the `global` keyword.
+
+### Linting
+
+```shell
+piper check fast        # light linting checks for fast iteration
+piper check strict      # full linting checks - run at end of a feature
+```
+

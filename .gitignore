@@ -34,3 +34,9 @@ data/
 .worktrees/
 
 .complexipy_cache/
+
+tasks/**/**.md
+!tasks/README.md
+!tasks/designs/README.md
+!tasks/ideas/README.md
+!tasks/plans/README.md
