@@ -1,0 +1,44 @@
+# Version control
+.git
+.gitignore
+
+# Tests
+tests/
+
+# Documentation and planning
+docs/
+tasks/
+CLAUDE.md
+
+# Development environment
+devenv.yaml
+devenv.nix
+devenv.lock
+.devenv/
+.direnv/
+.envrc
+
+# Python artifacts
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.pytest_cache/
+
+# IDE
+.vscode/
+.idea/
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# CI
+.github/
+
+# Lock files not needed (uv.lock IS needed)
+poetry.lock
+
+# Claude
+.claude/

@@ -666,6 +666,7 @@ version = "0.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "litestar", extra = ["standard"] },
+    { name = "pydantic" },
     { name = "python-dotenv" },
 ]
 
@@ -687,6 +688,7 @@ requires-dist = [
     { name = "httpx", marker = "extra == 'dev'", specifier = ">=0.27,<1.0" },
     { name = "import-linter", marker = "extra == 'dev'", specifier = ">=2.7,<3.0" },
     { name = "litestar", extras = ["standard"], specifier = ">=2.15,<3.0.0" },
+    { name = "pydantic", specifier = ">=2.0,<3.0" },
     { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.0,<9.0" },
     { name = "python-dotenv", specifier = ">=1.0,<2.0" },
 ]
