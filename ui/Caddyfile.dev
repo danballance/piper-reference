@@ -1,0 +1,14 @@
+:{$PORT}
+
+handle /api/* {
+	uri strip_prefix /api
+	reverse_proxy {$BACKEND_URL}
+}
+
+handle {
+	reverse_proxy {$FRONTEND_URL}
+}
+
+handle /health {
+	respond "OK" 200
+}

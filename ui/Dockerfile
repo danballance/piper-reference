@@ -6,15 +6,23 @@ RUN corepack enable pnpm
 WORKDIR /app
 
 # Install dependencies first (layer caching)
-COPY package.json pnpm-lock.yaml ./
+COPY ui/package.json ui/pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
 
-# Copy source and build
-COPY . .
-RUN pnpm run build
+# Copy schema for API client generation
+COPY schema/openapi.json ../schema/openapi.json
+
+# Copy source
+COPY ui/ .
+
+# Generate API client from OpenAPI schema
+RUN pnpm run codegen
+
+# Build: vite plugin generates route tree, then bundles the app
+RUN pnpm exec vite build
 
 # Stage 2: Serve
 FROM caddy:2-alpine
 
-COPY Caddyfile /etc/caddy/Caddyfile
+COPY ui/Caddyfile /etc/caddy/Caddyfile
 COPY --from=builder /app/dist /srv/dist

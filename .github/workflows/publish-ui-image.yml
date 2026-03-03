@@ -8,6 +8,7 @@ on:
       - "v*"
     paths:
       - "ui/**"
+      - "schema/**"
 
 env:
   REGISTRY: ghcr.io
@@ -48,7 +49,8 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
-          context: ./ui
+          context: .
+          file: ./ui/Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}

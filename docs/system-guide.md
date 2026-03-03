@@ -16,6 +16,7 @@ For backend internals (clean architecture, layers, protocols, testing), see [api
 │              Frontend Service                            │
 │                                                          │
 │  Local:   Vite dev server (:5173)                        │
+│  Compose: Caddy (:3000) → Vite (:5173)                  │
 │  Prod:    Caddy (:PORT)                                  │
 │                                                          │
 │  Static files ← ui/dist/                                 │
@@ -27,6 +28,7 @@ For backend internals (clean architecture, layers, protocols, testing), see [api
 │              Backend Service                             │
 │                                                          │
 │  Local:   uvicorn (:8080)                                │
+│  Compose: uvicorn --reload (:8080)                       │
 │  Prod:    uvicorn (:8080) on Railway private network     │
 │                                                          │
 │  Litestar ASGI app                                       │
@@ -43,7 +45,7 @@ For backend internals (clean architecture, layers, protocols, testing), see [api
 └──────────────────────────────────────────────────────────┘
 ```
 
-The frontend always calls `/api/*`. A proxy (Vite in dev, Caddy in prod) strips the `/api` prefix and forwards to the backend, which routes at `/`. This means the backend never needs to know about the `/api` prefix, and no CORS configuration is needed in either environment.
+The frontend always calls `/api/*`. A proxy (Vite in dev, Caddy in Compose and prod) strips the `/api` prefix and forwards to the backend, which routes at `/`. This means the backend never needs to know about the `/api` prefix, and no CORS configuration is needed in any environment.
 
 ## Local Development
 
@@ -98,11 +100,23 @@ The `rewrite` rule removes the `/api` prefix before forwarding, so the backend s
 
 ### Running with Docker Compose
 
-```bash
-docker-compose up
+Docker Compose runs all three services together, matching the production topology with hot-reload for both backend and frontend:
+
+```
+Browser → http://localhost:3000 (Caddy)
+              ├── /api/*  → strip prefix → api:8080 (uvicorn --reload)
+              └── /*      → ui:5173 (vite dev server)
 ```
 
-This builds and runs the backend on port 8080. The frontend is not included in `docker-compose.yml` — use `pnpm dev` separately during local development.
+```bash
+docker compose up          # start everything at http://localhost:3000
+docker compose down        # stop
+docker compose down -v     # stop and clear cached dependencies
+```
+
+Source code is volume-mounted into the containers, so changes to `api/` or `ui/src/` are reflected immediately without rebuilding. Named volumes (`api-venv`, `ui-node-modules`) cache installed dependencies across restarts.
+
+Caddy uses `ui/Caddyfile.dev` in Compose, which reverse-proxies to the Vite dev server for HMR. In production, the standard `ui/Caddyfile` serves static files from disk instead.
 
 ## Production on Railway
 
@@ -146,7 +160,8 @@ Both services deploy to [Railway](https://railway.com/) as Docker containers, pu
 
 ### Frontend service
 
-- Built from `ui/Dockerfile` (multi-stage: Node 22 + pnpm build → Caddy 2 Alpine)
+- Built from `ui/Dockerfile` (multi-stage: Node 22 + pnpm install + codegen + vite build → Caddy 2 Alpine)
+- The Dockerfile runs `pnpm run codegen` to generate the API client from `schema/openapi.json`, then `pnpm exec vite build` (the Vite plugin generates the TanStack Router route tree at build start)
 - Caddy serves the built SPA from `/srv/dist`
 - Caddy reverse-proxies `/api/*` to the backend over Railway's private network, stripping the `/api` prefix (configured in `ui/Caddyfile`)
 - SPA client-side routing handled via `try_files {path} /index.html`
@@ -184,9 +199,9 @@ Both services have GitHub Actions workflows that build Docker images and push th
 
 ### Frontend (`.github/workflows/publish-ui-image.yml`)
 
-- **Triggers**: push to `main` or `v*` tags, **only when `ui/` files change**
+- **Triggers**: push to `main` or `v*` tags, **only when `ui/` or `schema/` files change**
 - **Image**: `ghcr.io/{repo}-ui`
-- **Context**: `./ui`
+- **Context**: repository root (with `file: ./ui/Dockerfile`), so `schema/openapi.json` is available for codegen
 - **Tags**: same scheme as backend
 
 Both workflows use Docker Buildx with GitHub Actions cache (`type=gha`) for fast rebuilds.
