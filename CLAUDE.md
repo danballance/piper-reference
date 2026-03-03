@@ -33,11 +33,20 @@
 - Aim for elegant, composable, orthogonal, pluggable BaseModeligns.
 - Avoid complexity - complexity is the software killer.
 - Never use the `global` keyword.
+- Never re-export as "all" from `__init__.py`.
+- Import from package submodules and never `from {package} import *`.
+- Only import from the top of the module - never inline within a code block.
 
 ### Linting
+
+You can't run individual linters - they are wrapped behind the `piper` tool. Use these commands instead:
 
 ```shell
 piper check fast        # light linting checks for fast iteration
 piper check strict      # full linting checks - run at end of a feature
+piper check type        # check typing (with ty)
+piper check complexity  # check cognitive complexity (with complexipy)
+piper format            # format code (with ruff) 
+piper check strict      # fix automatic linting errors (with ruff) 
 ```
 
