@@ -1,5 +1,6 @@
 ## Project layout
 
+
 ├── api/
 ├── docs/
 ├── schema/
@@ -15,6 +16,9 @@
 ├── ui/
 ├── pyprojectject.toml
 └── uv.lock
+
+Note: Be sure to create all design and planning documents in the 
+`/tasks/plans` and `/tasks/designs` directories, not `/docs`.
 
 ## Coding Standards
 

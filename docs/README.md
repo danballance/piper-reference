@@ -1,4 +1,4 @@
 # Docs
 
-- This directory houses the project documentation.
-- Look here to understand the specifics of how this application works.
+- [System Guide](system-guide.md) — How the backend and frontend work together, local dev setup, and Railway deployment.
+- [API Architecture](api-architecture.md) — Backend clean architecture, layers, protocols, and testing conventions.
