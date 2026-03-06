@@ -63,18 +63,11 @@
                     },
                     "extra": {
                       "additionalProperties": {},
-                      "type": [
-                        "null",
-                        "object",
-                        "array"
-                      ]
+                      "type": ["null", "object", "array"]
                     }
                   },
                   "type": "object",
-                  "required": [
-                    "detail",
-                    "status_code"
-                  ],
+                  "required": ["detail", "status_code"],
                   "description": "Validation Exception",
                   "examples": [
                     {
@@ -132,18 +125,11 @@
                     },
                     "extra": {
                       "additionalProperties": {},
-                      "type": [
-                        "null",
-                        "object",
-                        "array"
-                      ]
+                      "type": ["null", "object", "array"]
                     }
                   },
                   "type": "object",
-                  "required": [
-                    "detail",
-                    "status_code"
-                  ],
+                  "required": ["detail", "status_code"],
                   "description": "Validation Exception",
                   "examples": [
                     {
@@ -214,18 +200,11 @@
                     },
                     "extra": {
                       "additionalProperties": {},
-                      "type": [
-                        "null",
-                        "object",
-                        "array"
-                      ]
+                      "type": ["null", "object", "array"]
                     }
                   },
                   "type": "object",
-                  "required": [
-                    "detail",
-                    "status_code"
-                  ],
+                  "required": ["detail", "status_code"],
                   "description": "Validation Exception",
                   "examples": [
                     {
@@ -255,10 +234,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "done",
-          "title"
-        ],
+        "required": ["done", "title"],
         "title": "TodoItem"
       }
     }

@@ -1,8 +1,8 @@
-import path from "node:path"
-import { defineConfig } from "vitest/config"
-import react from "@vitejs/plugin-react"
-import tsconfigPaths from "vite-tsconfig-paths"
-import { playwright } from "@vitest/browser-playwright"
+import path from "node:path";
+import { defineConfig } from "vitest/config";
+import react from "@vitejs/plugin-react";
+import tsconfigPaths from "vite-tsconfig-paths";
+import { playwright } from "@vitest/browser-playwright";
 
 export default defineConfig({
   plugins: [react(), tsconfigPaths()],
@@ -40,4 +40,4 @@ export default defineConfig({
     include: ["tests/**/*.test.{ts,tsx}"],
     setupFiles: ["tests/setup.ts"],
   },
-})
+});

@@ -1,29 +1,29 @@
-import { TodoItem } from "@/features/todo/components/todo-item"
+import { TodoItem } from "@/features/todo/components/todo-item";
 
-type TodoFilter = "all" | "done" | "not-done"
+type TodoFilter = "all" | "done" | "not-done";
 
 interface Todo {
-  title: string
-  done: boolean
+  title: string;
+  done: boolean;
 }
 
 interface TodoListProps {
-  todos: Todo[]
-  filter: TodoFilter
-  onToggle: (title: string) => void
+  todos: Todo[];
+  filter: TodoFilter;
+  onToggle: (title: string) => void;
 }
 
 export function TodoList({ todos, filter, onToggle }: TodoListProps) {
   const filtered = todos.filter((todo) => {
-    if (filter === "done") return todo.done
-    if (filter === "not-done") return !todo.done
-    return true
-  })
+    if (filter === "done") return todo.done;
+    if (filter === "not-done") return !todo.done;
+    return true;
+  });
 
   if (filtered.length === 0) {
     return (
       <p className="py-8 text-center text-muted-foreground">No todos yet</p>
-    )
+    );
   }
 
   return (
@@ -37,5 +37,5 @@ export function TodoList({ todos, filter, onToggle }: TodoListProps) {
         />
       ))}
     </div>
-  )
+  );
 }

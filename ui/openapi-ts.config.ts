@@ -1,4 +1,4 @@
-import { defineConfig } from "@hey-api/openapi-ts"
+import { defineConfig } from "@hey-api/openapi-ts";
 
 export default defineConfig({
   input: "../schema/openapi.json",
@@ -9,4 +9,4 @@ export default defineConfig({
     "@hey-api/client-fetch",
     "@tanstack/react-query",
   ],
-})
+});

@@ -3,4 +3,4 @@ export {
   getListQueryKey as todoListQueryKey,
   addItemMutation,
   itemTitleUpdateItemMutation,
-} from "@/api/generated/@tanstack/react-query.gen"
+} from "@/api/generated/@tanstack/react-query.gen";
