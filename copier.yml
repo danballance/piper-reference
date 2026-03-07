@@ -1,0 +1,48 @@
+_min_copier_version: "9.0.0"
+
+_exclude:
+  - "copier.yml"
+  - "build/"
+  - "tasks/plans/2026-*-copier-*"
+  - ".github/workflows/validate-template.yml"
+  - "docs/template-guide.md"
+  - "{% if not include_examples %}backend/api/todo{% endif %}"
+  - "{% if not include_examples %}backend/api/user{% endif %}"
+  - "{% if not include_examples %}backend/tests/todo{% endif %}"
+  - "{% if not include_examples %}backend/tests/user{% endif %}"
+  - "{% if not include_examples %}ui/src/features{% endif %}"
+  - "{% if not include_examples %}ui/tests/components{% endif %}"
+  - "{% if not include_examples %}ui/tests/mocks{% endif %}"
+  - "{% if not include_examples %}ui/tests/e2e/todo.spec.ts{% endif %}"
+
+project_name:
+  type: str
+  help: "Project name (kebab-case, e.g. my-web-app)"
+  default: "piper-reference"
+  validator: "{% if not project_name | regex_search('^[a-z][a-z0-9-]*$') %}Must be kebab-case (lowercase letters, numbers, hyphens){% endif %}"
+
+project_description:
+  type: str
+  help: "Short project description"
+  default: "A full-stack web application"
+
+python_package_name:
+  type: str
+  help: "Python package name (snake_case, derived from project name)"
+  default: "{{ project_name | replace('-', '_') }}"
+  validator: "{% if not python_package_name | regex_search('^[a-z][a-z0-9_]*$') %}Must be snake_case{% endif %}"
+
+author_name:
+  type: str
+  help: "Author full name"
+  default: "Anoni Mouse"
+
+author_email:
+  type: str
+  help: "Author email"
+  default: "nixprivacy@pm.me"
+
+include_examples:
+  type: bool
+  help: "Include example todo/user feature modules?"
+  default: true

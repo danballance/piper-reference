@@ -1,9 +1,9 @@
 [project]
-name = "piper-reference"
+name = "{{ project_name }}"
 version = "0.1.0"
-description = "Piper Reference Project"
+description = "{{ project_description }}"
 authors = [
-    {name = "Anoni Mouse",email = "nixprivacy@pm.me"}
+    {name = "{{ author_name }}",email = "{{ author_email }}"}
 ]
 requires-python = ">=3.12,<4.0"
 dependencies = [
@@ -32,6 +32,7 @@ pythonpath = ["."]
 [tool.importlinter]
 root_package = "api"
 include_external_packages = true
+{% if include_examples %}
 
 # Contract 1: Layer architecture within todo domain
 [[tool.importlinter.contracts]]
@@ -93,16 +94,19 @@ name = "Infrastructure must not import framework code"
 type = "forbidden"
 source_modules = ["api.todo.infrastructure"]
 forbidden_modules = ["litestar"]
+{% endif %}
 
-# Contract 7: Shared lib must not import domain-specific code
+# Shared lib must not import domain-specific code
 [[tool.importlinter.contracts]]
 id = "shared-independence"
 name = "Shared cannot import domain-specific code"
 type = "forbidden"
 source_modules = ["api.shared"]
 forbidden_modules = [
+{% if include_examples %}
     "api.todo",
     "api.user",
+{% endif %}
 ]
 
 [tool.ty.environment]

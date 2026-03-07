@@ -7,7 +7,7 @@
 # For all collection options, see:
 # https://slumber.lucaspickering.me/api/request_collection/index.html
 
-name: Piper Reference
+name: {{ project_name }}
 
 # Profiles are groups of data you can easily switch between. A common usage is
 # to define profiles for various environments of a REST service
@@ -16,7 +16,9 @@ profiles:
     name: Local
     data:
       host: http://localhost:8080
+{% if include_examples %}
 
+{% raw %}
 requests:
   todo_list:
     name: List items
@@ -29,3 +31,5 @@ requests:
     body:
       type: json
       data: { "title": "Item One", "done": false }
+{% endraw %}
+{% endif %}

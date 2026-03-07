@@ -1,16 +1,21 @@
 from litestar import Litestar
-from litestar.di import Provide
 from litestar.logging import LoggingConfig
+{% if include_examples %}
+
+from litestar.di import Provide
 
 from api.todo.application.services import TodoService
 from api.todo.infrastructure.memory_repo import InMemoryTodoRepository
 from api.todo.presentation.controllers import TodoController
+{% endif %}
 
 
 def create_app() -> Litestar:
+{% if include_examples %}
     repository = InMemoryTodoRepository()
     service = TodoService(repository=repository)
 
+{% endif %}
     logging_config = LoggingConfig(
         root={"level": "DEBUG", "handlers": ["queue_listener"]},
         formatters={
@@ -22,8 +27,12 @@ def create_app() -> Litestar:
     )
 
     return Litestar(
+{% if include_examples %}
         route_handlers=[TodoController],
         dependencies={"service": Provide(lambda: service, sync_to_thread=False)},
+{% else %}
+        route_handlers=[],
+{% endif %}
         logging_config=logging_config,
     )
 
