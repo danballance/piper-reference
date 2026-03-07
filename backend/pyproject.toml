@@ -105,6 +105,9 @@ forbidden_modules = [
     "api.user",
 ]
 
+[tool.ty.environment]
+python = "../.devenv/state/venv"
+
 [dependency-groups]
 dev = [
     "pytest>=8.4.2",
