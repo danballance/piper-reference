@@ -10,7 +10,6 @@ COPY pyproject.toml uv.lock ./
 RUN uv sync --frozen --no-dev --no-install-project
 
 # Copy application source
-COPY README.md ./
 COPY api/ api/
 
 # Install the project itself

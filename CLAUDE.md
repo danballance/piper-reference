@@ -1,23 +1,27 @@
 ## Project layout
 
-
-├── api/
-├── docs/
-├── schema/
-│   └── openapi.json
-├── tasks/
-│   ├── designs/
-│   │   └── task-one-design.md
-│   ├── ideas/
-│   │   ├── idea.md 
-│   ├── plans/
-│   │   └── task-one-plan.md
-│   └── TODO.md
+├── backend/
+│   ├── api/
+│   ├── tests/
+│   ├── pyproject.toml
+│   ├── uv.lock
+│   └── Dockerfile
 ├── ui/
-├── pyprojectject.toml
-└── uv.lock
+│   ├── src/
+│   ├── biome.json
+│   ├── package.json
+│   └── Dockerfile
+├── schema/
+│   └── openapi.json
+├── tasks/
+│   ├── designs/
+│   ├── ideas/
+│   ├── plans/
+│   └── TODO.md
+├── docs/
+└── docker-compose.yml
 
-Note: Be sure to create all design and planning documents in the 
+Note: Be sure to create all design and planning documents in the
 `/tasks/plans` and `/tasks/designs` directories, not `/docs`.
 
 ## Coding Standards
@@ -46,11 +50,13 @@ Note: Be sure to create all design and planning documents in the
 You can't run individual linters - they are wrapped behind the `piper` tool. Use these commands instead:
 
 ```shell
-piper check fast        # light linting checks for fast iteration
-piper check strict      # full linting checks - run at end of a feature
-piper check type        # check typing (with ty)
-piper check complexity  # check cognitive complexity (with complexipy)
-piper format            # format code (with ruff) 
-piper check strict      # fix automatic linting errors (with ruff) 
-```
+# Python (backend)
+uvx piper-py -d ./backend check fast        # light linting checks for fast iteration
+uvx piper-py -d ./backend check strict      # full linting checks - run at end of a feature
+uvx piper-py -d ./backend check type        # check typing (with ty)
+uvx piper-py -d ./backend check complexity  # check cognitive complexity (with complexipy)
+uvx piper-py -d ./backend format            # format code (with ruff)
 
+# TypeScript (frontend)
+npx piper-ts -d ./ui check fast             # light linting checks
+```

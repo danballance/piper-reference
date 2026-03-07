@@ -3,10 +3,9 @@ services:
     image: python:3.12-slim
     working_dir: /app
     volumes:
-      - ./api:/app/api
-      - ./pyproject.toml:/app/pyproject.toml
-      - ./uv.lock:/app/uv.lock
-      - ./README.md:/app/README.md
+      - ./backend/api:/app/api
+      - ./backend/pyproject.toml:/app/pyproject.toml
+      - ./backend/uv.lock:/app/uv.lock
       - api-venv:/app/.venv
     command: >
       sh -c "

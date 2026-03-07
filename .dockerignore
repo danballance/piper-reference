@@ -2,8 +2,8 @@
 .git
 .gitignore
 
-# Tests
-tests/
+# Backend (not needed for UI image)
+backend/
 
 # Documentation and planning
 docs/
@@ -18,27 +18,16 @@ devenv.lock
 .direnv/
 .envrc
 
-# Python artifacts
-__pycache__/
-*.pyc
-*.pyo
-*.egg-info/
-.pytest_cache/
-
 # IDE
 .vscode/
 .idea/
 
 # Docker
-Dockerfile
 docker-compose.yml
 .dockerignore
 
 # CI
 .github/
-
-# Lock files not needed (uv.lock IS needed)
-poetry.lock
 
 # Claude
 .claude/
