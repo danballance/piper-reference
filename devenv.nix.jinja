@@ -3,6 +3,11 @@
   enterShell = ''
     export NPM_CONFIG_PREFIX="$HOME/.npm-global"
     export PATH="$NPM_CONFIG_PREFIX/bin:$PATH"
+
+    # Symlink devenv venv so ty can auto-discover it
+    if [ -d .devenv/state/venv ] && [ ! -e backend/.venv ]; then
+      ln -s ../.devenv/state/venv backend/.venv
+    fi
   '';
   languages.python = {
     enable = true;

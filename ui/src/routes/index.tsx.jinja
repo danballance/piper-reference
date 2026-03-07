@@ -1,4 +1,4 @@
-{% if include_examples %}
+{%- if include_examples -%}
 import { createFileRoute } from "@tanstack/react-router";
 import {
   useSuspenseQuery,
@@ -132,7 +132,7 @@ function FilterButton({
     </Button>
   );
 }
-{% else %}
+{%- else -%}
 import { createFileRoute } from "@tanstack/react-router";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -156,4 +156,4 @@ function IndexPage() {
     </div>
   );
 }
-{% endif %}
+{%- endif %}
