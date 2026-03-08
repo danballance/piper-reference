@@ -46,3 +46,5 @@ tasks/**/**.md
 !tasks/plans/README.md
 !tasks/plans/2026-03-07-copier-template-design.md
 !tasks/plans/2026-03-07-copier-template-plan.md
+!tasks/designs/2026-03-08-claude-code-lint-hooks-design.md
+!tasks/plans/2026-03-08-claude-code-lint-hooks-plan.md
