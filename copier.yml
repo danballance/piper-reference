@@ -14,6 +14,9 @@ _exclude:
   - "{% if not include_examples %}ui/tests/components{% endif %}"
   - "{% if not include_examples %}ui/tests/mocks{% endif %}"
   - "{% if not include_examples %}ui/tests/e2e/todo.spec.ts{% endif %}"
+  - "{% if not include_nix_devenv %}.envrc{% endif %}"
+  - "{% if not include_nix_devenv %}devenv.nix{% endif %}"
+  - "{% if not include_nix_devenv %}devenv.yaml{% endif %}"
 
 project_name:
   type: str
@@ -46,3 +49,8 @@ include_examples:
   type: bool
   help: "Include example todo/user feature modules?"
   default: true
+
+include_nix_devenv:
+  type: bool
+  help: "Include Nix devenv configuration (.envrc, devenv.nix, devenv.yaml)?"
+  default: false
