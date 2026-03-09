@@ -2,8 +2,16 @@
 .git
 .gitignore
 
-# Backend (not needed for UI image)
-backend/
+# Python/Nix caches
+__pycache__/
+*.pyc
+.pycache/
+.venv/
+.pytest_cache/
+.ruff_cache/
+
+# Node artifacts
+node_modules/
 
 # Documentation and planning
 docs/

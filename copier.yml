@@ -3,6 +3,7 @@ _min_copier_version: "9.0.0"
 _exclude:
   - "copier.yml"
   - "build/"
+  - "deploy/"
   - "tasks/plans/2026-*-copier-*"
   - ".github/workflows/validate-template.yml"
   - "docs/template-guide.md"

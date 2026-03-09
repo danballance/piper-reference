@@ -1,0 +1,20 @@
+services:
+  api:
+    build:
+      context: ./backend
+    expose:
+      - "8080"
+    restart: unless-stopped
+
+  ui:
+    build:
+      context: .
+      dockerfile: ui/Dockerfile
+    expose:
+      - "80"
+    environment:
+      PORT: "80"
+      BACKEND_URL: api:8080
+    depends_on:
+      - api
+    restart: unless-stopped
