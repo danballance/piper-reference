@@ -5,23 +5,7 @@ export default defineConfig({
   timeout: 30_000,
   retries: 0,
   use: {
-    baseURL: "http://localhost:5173",
+    baseURL: process.env.PLAYWRIGHT_BASE_URL || "http://localhost:3000",
     headless: true,
-    launchOptions: {
-      executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH,
-    },
   },
-  webServer: [
-    {
-      command:
-        "cd .. && uv run litestar --app api.main:create_app run --port 8000",
-      port: 8000,
-      reuseExistingServer: !process.env.CI,
-    },
-    {
-      command: "pnpm dev",
-      port: 5173,
-      reuseExistingServer: !process.env.CI,
-    },
-  ],
 });

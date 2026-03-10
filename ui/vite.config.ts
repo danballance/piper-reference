@@ -12,6 +12,7 @@ export default defineConfig({
     tsconfigPaths(),
   ],
   server: {
+    allowedHosts: ["caddy"],
     proxy: {
       "/api": {
         target: "http://localhost:8080",
