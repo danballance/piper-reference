@@ -83,3 +83,11 @@ def test_update_item() -> None:
         data = response.json()
         assert len(data) == 1
         assert data[0]["done"] is True
+
+
+def test_update_nonexistent_item_returns_404() -> None:
+    with _create_test_client() as client:
+        response = client.put(
+            "/nonexistent", json={"title": "nonexistent", "done": False}
+        )
+        assert response.status_code == 404

@@ -40,7 +40,10 @@ jobs:
         run: cd build/backend && uv sync
 
       - name: Run backend tests
-        run: cd build/backend && uv run pytest -v
+        run: cd build/backend && uv run pytest -m "not schemathesis" -v
+
+      - name: Run backend schema tests
+        run: cd build/backend && uv run pytest -m schemathesis -v
 
       - name: Run backend linting
         run: piper-py -d ./build/backend check fast

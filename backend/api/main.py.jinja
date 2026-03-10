@@ -1,5 +1,6 @@
 from litestar import Litestar
 from litestar.logging import LoggingConfig
+from litestar.plugins.pydantic import PydanticInitPlugin
 {%- if include_examples %}
 
 from litestar.di import Provide
@@ -32,6 +33,7 @@ def create_app() -> Litestar:
 {%- else %}
         route_handlers=[],
 {%- endif %}
+        plugins=[PydanticInitPlugin(validate_strict=True)],
         logging_config=logging_config,
     )
 

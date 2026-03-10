@@ -28,6 +28,9 @@ packages = ["api"]
 
 [tool.pytest.ini_options]
 pythonpath = ["."]
+markers = [
+    "schemathesis: property-based API schema tests",
+]
 
 [tool.importlinter]
 root_package = "api"
@@ -113,4 +116,5 @@ forbidden_modules = [
 dev = [
     "pytest>=8.4.2",
     "pytest-cov>=7.0.0",
+    "schemathesis>=4.10,<5.0",
 ]

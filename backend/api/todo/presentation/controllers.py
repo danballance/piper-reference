@@ -1,4 +1,5 @@
 from litestar import Controller, get, post, put
+from litestar.exceptions import NotFoundException
 from litestar.status_codes import HTTP_201_CREATED
 
 from api.todo.application.protocols import TodoServiceProtocol
@@ -24,11 +25,14 @@ class TodoController(Controller):
     ) -> list[TodoItem]:
         return service.add(data)
 
-    @put("/{todo_title:str}")
+    @put("/{todo_title:str}", raises=[NotFoundException])
     async def update_item(
         self,
         service: TodoServiceProtocol,
         todo_title: str,
         data: TodoItem,  # noqa: WPS110
     ) -> list[TodoItem]:
-        return service.update(todo_title, data)
+        try:
+            return service.update(todo_title, data)
+        except KeyError:
+            raise NotFoundException(detail=f"Todo '{todo_title}' not found")
