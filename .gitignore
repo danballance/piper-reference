@@ -1,46 +1,22 @@
-# Devenv
-.devenv*
-devenv.local.nix
-
-# direnv
-.direnv
-
-# pre-commit
-.pre-commit-config.yaml
-.aider*
-
-.coverage
-
-__pycache__/
-.pycache/
-.pytest_cache/
-.venv/
-*.egg-info/
-
-results.db
-
-logs/
-
-ui/dist/
-*node_modules*
-*.db
+# Copier build output
+build/
 
 # Secrets
 .env
 
-# Runtime data (Docker-created, root-owned staging dirs)
-data/
+# Devenv (if used at root for template development)
+.devenv*
+.direnv
+devenv.local.nix
+
+# Caches
+__pycache__/
+.pycache/
+node_modules/
+.complexipy_cache/
+.ruff_cache/
+.pytest_cache/
 
 # Worktrees
 .worktrees/
 
-# Copier build output
-build/
-
-.complexipy_cache/
-
-tasks/**/**.md
-!tasks/README.md
-!tasks/designs/README.md
-!tasks/ideas/README.md
-!tasks/plans/README.md

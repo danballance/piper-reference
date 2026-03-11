@@ -1,0 +1,40 @@
+# Production stack built from local Dockerfiles.
+#
+# Build and run with:
+#   docker compose -f docker-compose.prod.yml up --build
+#
+# Note: No host port mapping - deployment platforms (Coolify, etc.) handle routing.
+
+services:
+  api:
+    build:
+      context: ./backend
+    expose:
+      - "8080"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import socket; s=socket.create_connection(('localhost', 8080)); s.close()"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  ui:
+    build:
+      context: .
+      dockerfile: ui/Dockerfile
+    expose:
+      - "80"
+    environment:
+      PORT: "80"
+      BACKEND_URL: api:8080
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO", "/dev/null", "http://localhost:80/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s

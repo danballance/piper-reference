@@ -1,12 +1,15 @@
 _min_copier_version: "9.0.0"
 
+_subdirectory: _template
+
+_tasks:
+  - >-
+    "{{ _copier_python }}"
+    "{{ _copier_conf.src_path }}/scripts/copy_ci_workflow.py"
+    "{{ _copier_conf.src_path }}"
+    "{{ _copier_conf.dst_path }}"
+
 _exclude:
-  - "copier.yml"
-  - "build/"
-  - "deploy/"
-  - "tasks/plans/2026-*-copier-*"
-  - ".github/workflows/validate-template.yml"
-  - "docs/template-guide.md"
   - "{% if not include_examples %}backend/api/todo{% endif %}"
   - "{% if not include_examples %}backend/api/user{% endif %}"
   - "{% if not include_examples %}backend/tests/todo{% endif %}"
