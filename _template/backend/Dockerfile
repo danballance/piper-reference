@@ -18,6 +18,9 @@ RUN uv sync --frozen --no-dev
 # Stage 2: Runtime
 FROM python:3.12-slim
 
+# Install wget for Docker healthcheck
+RUN apt-get update && apt-get install -y --no-install-recommends wget && rm -rf /var/lib/apt/lists/*
+
 # Create non-root user
 RUN groupadd --system app && useradd --system --gid app app
 

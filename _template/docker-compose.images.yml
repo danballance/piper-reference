@@ -4,7 +4,7 @@
 #   API_IMAGE=ghcr.io/org/app:tag UI_IMAGE=ghcr.io/org/app-ui:tag \
 #   docker compose -f docker-compose.images.yml up
 #
-# Note: No host port mapping - deployment platforms (Coolify, etc.) handle routing.
+# Note: No host port mapping - deployment platforms (Dokplay etc.) handle routing.
 
 services:
   api:
@@ -13,7 +13,7 @@ services:
       - "8080"
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "python", "-c", "import socket; s=socket.create_connection(('localhost', 8080)); s.close()"]
+      test: ["CMD", "wget", "-qO", "/dev/null", "http://localhost:8080/health"]
       interval: 10s
       timeout: 5s
       retries: 5
