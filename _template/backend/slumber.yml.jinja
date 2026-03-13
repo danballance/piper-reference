@@ -16,7 +16,6 @@ profiles:
     name: Local
     data:
       host: http://localhost:8080
-{% if include_examples %}
 
 {% raw %}
 requests:
@@ -32,4 +31,3 @@ requests:
       type: json
       data: { "title": "Item One", "done": false }
 {% endraw %}
-{% endif %}

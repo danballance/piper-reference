@@ -1,4 +1,3 @@
-{%- if include_examples -%}
 import { createFileRoute } from "@tanstack/react-router";
 import {
   useSuspenseQuery,
@@ -132,28 +131,3 @@ function FilterButton({
     </Button>
   );
 }
-{%- else -%}
-import { createFileRoute } from "@tanstack/react-router";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-
-export const Route = createFileRoute("/")({
-  component: IndexPage,
-});
-
-function IndexPage() {
-  return (
-    <div className="container mx-auto max-w-2xl p-8">
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-2xl">{{ project_name }}</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-muted-foreground">
-            Welcome to your new project. Start building!
-          </p>
-        </CardContent>
-      </Card>
-    </div>
-  );
-}
-{%- endif %}

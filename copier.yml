@@ -10,14 +10,6 @@ _tasks:
     "{{ _copier_conf.dst_path }}"
 
 _exclude:
-  - "{% if not include_examples %}backend/api/todo{% endif %}"
-  - "{% if not include_examples %}backend/api/user{% endif %}"
-  - "{% if not include_examples %}backend/tests/todo{% endif %}"
-  - "{% if not include_examples %}backend/tests/user{% endif %}"
-  - "{% if not include_examples %}ui/src/features{% endif %}"
-  - "{% if not include_examples %}ui/tests/components{% endif %}"
-  - "{% if not include_examples %}ui/tests/mocks{% endif %}"
-  - "{% if not include_examples %}ui/tests/e2e/todo.spec.ts{% endif %}"
   - "{% if not include_nix_devenv %}.envrc{% endif %}"
   - "{% if not include_nix_devenv %}devenv.nix{% endif %}"
   - "{% if not include_nix_devenv %}devenv.yaml{% endif %}"
@@ -48,11 +40,6 @@ author_email:
   type: str
   help: "Author email"
   default: "nixprivacy@pm.me"
-
-include_examples:
-  type: bool
-  help: "Include example todo/user feature modules?"
-  default: true
 
 include_nix_devenv:
   type: bool

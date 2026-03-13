@@ -35,7 +35,6 @@ markers = [
 [tool.importlinter]
 root_package = "api"
 include_external_packages = true
-{% if include_examples %}
 
 # Contract 1: Layer architecture within todo domain
 [[tool.importlinter.contracts]]
@@ -97,7 +96,6 @@ name = "Infrastructure must not import framework code"
 type = "forbidden"
 source_modules = ["api.todo.infrastructure"]
 forbidden_modules = ["litestar"]
-{% endif %}
 
 # Shared lib must not import domain-specific code
 [[tool.importlinter.contracts]]
@@ -106,10 +104,8 @@ name = "Shared cannot import domain-specific code"
 type = "forbidden"
 source_modules = ["api.shared"]
 forbidden_modules = [
-{% if include_examples %}
     "api.todo",
     "api.user",
-{% endif %}
 ]
 
 [dependency-groups]
