@@ -5,7 +5,7 @@
 - [] Mutation testing - typescript
 - [] Don't copy git into project with copier
 - [] Add docker linting
-- [] Move test libs into piper common tool?
+- [] Extract shared lint/test tooling when a second template exists
 
 # Linting rules to catch
 

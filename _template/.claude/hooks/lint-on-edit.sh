@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-STATE_FILE="/tmp/piper-lint-stop-count"
+STATE_FILE="/tmp/lint-stop-count"
 
 # Reset stop counter — agent is actively editing, so next Stop gets fresh attempts
 echo "0" > "$STATE_FILE"
@@ -15,11 +15,13 @@ if [ -z "$FILE_PATH" ]; then
   exit 0
 fi
 
+SCRIPT_DIR="$(cd "$(dirname "$0")/../scripts" && pwd)"
+
 # Route to the relevant linter based on file extension
 case "$FILE_PATH" in
   *.py)
     echo "⚡ Running fast Python lint check..."
-    OUTPUT=$(piper-py -d ./backend check fast 2>&1) || {
+    OUTPUT=$("$SCRIPT_DIR/lint-py.sh" fast ./backend 2>&1) || {
       echo "⚡ Lint check (fast) found issues in Python code:"
       echo ""
       echo "$OUTPUT"
@@ -30,7 +32,7 @@ case "$FILE_PATH" in
     ;;
   *.ts|*.tsx|*.js|*.jsx)
     echo "⚡ Running fast TypeScript lint check..."
-    OUTPUT=$(piper-ts -d ./ui check fast 2>&1) || {
+    OUTPUT=$("$SCRIPT_DIR/lint-ts.sh" fast ./ui 2>&1) || {
       echo "⚡ Lint check (fast) found issues in TypeScript code:"
       echo ""
       echo "$OUTPUT"

@@ -51,18 +51,26 @@ Note: Be sure to create all design and planning documents in the
 
 ### Linting
 
-You can't run individual linters - they are wrapped behind the `piper` tool. Use these commands instead:
+Linting is handled by shell scripts in `.claude/scripts/`. These are called
+automatically by Claude Code hooks, but can also be run manually:
 
 ```shell
 # Python (backend)
-uvx piper-py -d ./backend check fast        # light linting checks for fast iteration
-uvx piper-py -d ./backend check strict      # full linting checks - run at end of a feature
-uvx piper-py -d ./backend check type        # check typing (with ty)
-uvx piper-py -d ./backend check complexity  # check cognitive complexity (with complexipy)
-uvx piper-py -d ./backend format            # format code (with ruff)
+bash .claude/scripts/lint-py.sh fast ./backend     # fast: format + lint + type
+bash .claude/scripts/lint-py.sh full ./backend     # full: fast + arch + deadcode + security + complexity
+bash .claude/scripts/lint-py.sh strict ./backend   # strict: full + wemake-python-styleguide
 
 # TypeScript (frontend)
-npx piper-ts -d ./ui check fast             # light linting checks
+bash .claude/scripts/lint-ts.sh fast ./ui           # fast: format + lint + type
+bash .claude/scripts/lint-ts.sh full ./ui           # full: fast + deadcode
+
+# Formatting (auto-fix)
+cd backend && uv run ruff format .
+cd ui && npx biome format --write .
+
+# Fix lint issues (auto-fix)
+cd backend && uv run ruff check --fix .
+cd ui && npx biome lint --fix .
 ```
 
 ## General guidelines

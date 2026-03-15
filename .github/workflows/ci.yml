@@ -40,9 +40,6 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v4
 
-      - name: Install piper-py
-        run: uv tool install "piper-py @ git+https://github.com/danballance/pied-piper.git#subdirectory=py"
-
       - name: Install backend dependencies
         run: cd ${{ steps.workdir.outputs.dir }}/backend && uv sync
 
@@ -53,7 +50,7 @@ jobs:
         run: cd ${{ steps.workdir.outputs.dir }}/backend && uv run pytest -m schemathesis -v
 
       - name: Run backend linting
-        run: piper-py -d ${{ steps.workdir.outputs.dir }}/backend check fast
+        run: bash ${{ steps.workdir.outputs.dir }}/.claude/scripts/lint-py.sh fast ${{ steps.workdir.outputs.dir }}/backend
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4
@@ -67,16 +64,11 @@ jobs:
           cache: pnpm
           cache-dependency-path: ${{ steps.workdir.outputs.dir }}/ui/pnpm-lock.yaml
 
-      - name: Install piper-ts
-        run: |
-          git clone --depth 1 https://github.com/danballance/pied-piper.git /tmp/pied-piper
-          cd /tmp/pied-piper/ts && npm install && npm run build && npm install -g .
-
       - name: Install frontend dependencies
         run: cd ${{ steps.workdir.outputs.dir }}/ui && pnpm install --frozen-lockfile
 
       - name: Run frontend linting
-        run: piper-ts -d ${{ steps.workdir.outputs.dir }}/ui check fast
+        run: bash ${{ steps.workdir.outputs.dir }}/.claude/scripts/lint-ts.sh fast ${{ steps.workdir.outputs.dir }}/ui
 
       - name: Start Docker Compose stack
         run: docker compose -f ${{ steps.workdir.outputs.dir }}/docker-compose.yml up -d --wait --wait-timeout 120 api ui caddy

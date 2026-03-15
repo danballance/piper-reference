@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -uo pipefail
 
-STATE_FILE="/tmp/piper-lint-stop-count"
+STATE_FILE="/tmp/lint-stop-count"
 MAX_ATTEMPTS=3
 
 # Read and increment counter
@@ -9,11 +9,13 @@ COUNT=$(cat "$STATE_FILE" 2>/dev/null || echo "0")
 COUNT=$((COUNT + 1))
 echo "$COUNT" > "$STATE_FILE"
 
+SCRIPT_DIR="$(cd "$(dirname "$0")/../scripts" && pwd)"
+
 # Run both linters, capture output and exit codes
 PY_EXIT=0
-PY_OUTPUT=$(piper-py -d ./backend check strict 2>&1) || PY_EXIT=$?
+PY_OUTPUT=$("$SCRIPT_DIR/lint-py.sh" strict ./backend 2>&1) || PY_EXIT=$?
 TS_EXIT=0
-TS_OUTPUT=$(piper-ts -d ./ui check full 2>&1) || TS_EXIT=$?
+TS_OUTPUT=$("$SCRIPT_DIR/lint-ts.sh" full ./ui 2>&1) || TS_EXIT=$?
 
 # If both pass, reset counter and exit cleanly
 if [ $PY_EXIT -eq 0 ] && [ $TS_EXIT -eq 0 ]; then
@@ -25,10 +27,10 @@ fi
 # Build combined output
 COMBINED=""
 if [ $PY_EXIT -ne 0 ]; then
-  COMBINED="${COMBINED}--- Python (piper-py check strict) ---\n${PY_OUTPUT}\n\n"
+  COMBINED="${COMBINED}--- Python (strict) ---\n${PY_OUTPUT}\n\n"
 fi
 if [ $TS_EXIT -ne 0 ]; then
-  COMBINED="${COMBINED}--- TypeScript (piper-ts check full) ---\n${TS_OUTPUT}\n\n"
+  COMBINED="${COMBINED}--- TypeScript (full) ---\n${TS_OUTPUT}\n\n"
 fi
 
 # Circuit breaker
