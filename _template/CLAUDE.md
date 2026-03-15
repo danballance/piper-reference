@@ -98,6 +98,9 @@ Minimum code that solves the problem. Nothing speculative.
     No "flexibility" or "configurability" that wasn't requested.
     No error handling for impossible scenarios.
     If you write 200 lines and it could be 50, rewrite it.
+    Prefer consistency over configurability.
+    A simpler, consistent interface is a primitive that can be built upon.
+    A seemingly "powerful" interface with many options increases complexity and maintenance burden.
 
 Ask yourself: "Would a senior engineer say this is overcomplicated?" If yes, simplify.
 
