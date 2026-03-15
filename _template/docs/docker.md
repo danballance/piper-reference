@@ -14,7 +14,7 @@ from the template repository itself.
 Start the dev stack:
 
 ```bash
-docker compose up --build -d api ui caddy
+docker compose up --build -d api ui
 ```
 
 Open the app at:
@@ -26,7 +26,7 @@ http://localhost:3000
 View logs:
 
 ```bash
-docker compose logs -f api ui caddy
+docker compose logs -f api ui
 ```
 
 Stop everything:
@@ -47,7 +47,7 @@ docker compose down -v --remove-orphans
 Start the app services:
 
 ```bash
-docker compose up --build -d api ui caddy
+docker compose up --build -d api ui
 ```
 
 Run Playwright as a one-shot container:
@@ -67,7 +67,7 @@ Why this is the recommended flow:
 If CI should run the containerized E2E path, use the same sequence as local:
 
 ```bash
-docker compose up --build -d api ui caddy
+docker compose up --build -d api ui
 docker compose run --rm playwright
 docker compose down -v --remove-orphans
 ```

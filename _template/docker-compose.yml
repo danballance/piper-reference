@@ -37,35 +37,18 @@ services:
         pnpm run codegen &&
         pnpm dev --host
       "
-    expose:
-      - "5173"
+    ports:
+      - "3000:5173"
+    environment:
+      BACKEND_URL: api:8080
     healthcheck:
       test: ["CMD", "wget", "-qO", "/dev/null", "http://localhost:5173/"]
       interval: 5s
       timeout: 5s
       retries: 12
       start_period: 60s
-
-  caddy:
-    image: caddy:2-alpine
-    ports:
-      - "3000:3000"
-    volumes:
-      - ./ui/Caddyfile.dev:/etc/caddy/Caddyfile
-    environment:
-      PORT: 3000
-      BACKEND_URL: api:8080
-      FRONTEND_URL: ui:5173
-    healthcheck:
-      test: ["CMD", "wget", "-qO", "/dev/null", "http://localhost:3000/health"]
-      interval: 5s
-      timeout: 5s
-      retries: 6
-      start_period: 5s
     depends_on:
       api:
-        condition: service_healthy
-      ui:
         condition: service_healthy
 
   playwright:
@@ -81,9 +64,11 @@ services:
         pnpm test:e2e
       "
     environment:
-      PLAYWRIGHT_BASE_URL: http://caddy:3000
+      PLAYWRIGHT_BASE_URL: http://ui:5173
     depends_on:
-      caddy:
+      api:
+        condition: service_healthy
+      ui:
         condition: service_healthy
     profiles:
       - test

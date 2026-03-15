@@ -71,7 +71,7 @@ jobs:
         run: bash ${{ steps.workdir.outputs.dir }}/.claude/scripts/lint-ts.sh fast ${{ steps.workdir.outputs.dir }}/ui
 
       - name: Start Docker Compose stack
-        run: docker compose -f ${{ steps.workdir.outputs.dir }}/docker-compose.yml up -d --wait --wait-timeout 120 api ui caddy
+        run: docker compose -f ${{ steps.workdir.outputs.dir }}/docker-compose.yml up -d --wait --wait-timeout 120 api ui
         timeout-minutes: 5
 
       - name: Run E2E tests

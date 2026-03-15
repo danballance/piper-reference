@@ -12,10 +12,10 @@ export default defineConfig({
     tsconfigPaths(),
   ],
   server: {
-    allowedHosts: ["caddy"],
+    allowedHosts: true,
     proxy: {
       "/api": {
-        target: "http://localhost:8080",
+        target: `http://${process.env.BACKEND_URL || "localhost:8080"}`,
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },
