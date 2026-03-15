@@ -9,6 +9,7 @@ services:
   api:
     build:
       context: ./backend
+      target: prod
     expose:
       - "8080"
     restart: unless-stopped
@@ -23,6 +24,7 @@ services:
     build:
       context: .
       dockerfile: ui/Dockerfile
+      target: prod
     expose:
       - "80"
     environment:

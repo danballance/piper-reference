@@ -1,4 +1,4 @@
-from litestar import Litestar
+from litestar import Litestar, get
 from litestar.logging import LoggingConfig
 from litestar.plugins.pydantic import PydanticInitPlugin
 from litestar.di import Provide
@@ -6,6 +6,11 @@ from litestar.di import Provide
 from api.todo.application.services import TodoService
 from api.todo.infrastructure.memory_repo import InMemoryTodoRepository
 from api.todo.presentation.controllers import TodoController
+
+
+@get("/health", exclude_from_auth=True)
+async def health_check() -> dict[str, str]:
+    return {"status": "ok"}
 
 
 def create_app() -> Litestar:
@@ -23,7 +28,7 @@ def create_app() -> Litestar:
     )
 
     return Litestar(
-        route_handlers=[TodoController],
+        route_handlers=[TodoController, health_check],
         dependencies={"service": Provide(lambda: service, sync_to_thread=False)},
         plugins=[PydanticInitPlugin(validate_strict=True)],
         logging_config=logging_config,

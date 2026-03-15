@@ -9,6 +9,10 @@ from the template repository itself.
 - `docker-compose.prod.yml`: build production images locally
 - `docker-compose.images.yml`: run prebuilt images in CI or production
 
+Both dev and prod use the same Dockerfiles (multi-stage builds with `dev` and `prod`
+targets). This ensures system packages, base images, and user setup are identical
+across environments.
+
 ## Local development
 
 Start the dev stack:
@@ -35,8 +39,15 @@ Stop everything:
 docker compose down
 ```
 
-If you have regenerated the project with Copier, prefer a clean reset before starting
-again:
+After changing dependencies (pyproject.toml/uv.lock or package.json/pnpm-lock.yaml),
+rebuild the images:
+
+```bash
+docker compose up --build -d api ui
+```
+
+For a clean reset (e.g. after regenerating with Copier, or to clear cached
+node_modules):
 
 ```bash
 docker compose down -v --remove-orphans

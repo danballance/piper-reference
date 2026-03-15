@@ -1,42 +1,29 @@
 services:
   api:
-    image: python:3.12-slim
-    working_dir: /app
+    build:
+      context: ./backend
+      target: dev
     volumes:
       - ./backend/api:/app/api
-      - ./backend/pyproject.toml:/app/pyproject.toml
-      - ./backend/uv.lock:/app/uv.lock
-      - api-venv:/app/.venv
-    command: >
-      sh -c "
-        pip install uv --quiet &&
-        uv sync --frozen --no-dev &&
-        uv run uvicorn api.main:app --reload --host 0.0.0.0 --port 8080
-      "
     expose:
       - "8080"
     healthcheck:
-      test: ["CMD", "python", "-c", "import socket; s=socket.create_connection(('localhost', 8080)); s.close()"]
+      test: ["CMD", "wget", "-qO", "/dev/null", "http://localhost:8080/health"]
       interval: 5s
       timeout: 5s
       retries: 12
       start_period: 30s
 
   ui:
-    image: node:22-alpine
-    working_dir: /app
+    build:
+      context: .
+      dockerfile: ui/Dockerfile
+      target: dev
     volumes:
       - ./ui:/app
       - ./schema:/schema
       - ui-node-modules:/app/node_modules
       - ui-pnpm-store:/app/.pnpm-store
-    command: >
-      sh -c "
-        corepack enable pnpm &&
-        pnpm install --frozen-lockfile &&
-        pnpm run codegen &&
-        pnpm dev --host
-      "
     ports:
       - "3000:5173"
     environment:
@@ -74,7 +61,6 @@ services:
       - test
 
 volumes:
-  api-venv:
   ui-node-modules:
   ui-pnpm-store:
   playwright-node-modules:

@@ -1,39 +1,46 @@
-# Stage 1: Builder
-FROM python:3.12-slim AS builder
+# Shared base: system packages + user (identical for dev and prod)
+FROM python:3.12-slim AS base
+
+RUN apt-get update && apt-get install -y --no-install-recommends wget && rm -rf /var/lib/apt/lists/*
+RUN groupadd --system app && useradd --system --gid app app
+
+WORKDIR /app
+
+# Dev: deps baked in, source mounted via volume
+FROM base AS dev
 
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
-WORKDIR /app
+COPY pyproject.toml uv.lock ./
+RUN uv sync --frozen --no-dev --no-install-project
+
+ENV PATH="/app/.venv/bin:$PATH"
+
+EXPOSE 8080
+
+CMD ["uvicorn", "api.main:app", "--reload", "--host", "0.0.0.0", "--port", "8080"]
+
+# Builder: full install for prod image
+FROM base AS builder
+
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
 # Install dependencies first (layer caching)
 COPY pyproject.toml uv.lock ./
 RUN uv sync --frozen --no-dev --no-install-project
 
-# Copy application source
+# Copy application source and install the project itself
 COPY api/ api/
-
-# Install the project itself
 RUN uv sync --frozen --no-dev
 
-# Stage 2: Runtime
-FROM python:3.12-slim
+# Prod: minimal runtime, no uv
+FROM base AS prod
 
-# Install wget for Docker healthcheck
-RUN apt-get update && apt-get install -y --no-install-recommends wget && rm -rf /var/lib/apt/lists/*
-
-# Create non-root user
-RUN groupadd --system app && useradd --system --gid app app
-
-WORKDIR /app
-
-# Copy the virtual environment and source from builder
 COPY --from=builder /app/.venv /app/.venv
 COPY --from=builder /app/api /app/api
 
-# Add venv to PATH
 ENV PATH="/app/.venv/bin:$PATH"
 
-# Switch to non-root user
 USER app
 
 EXPOSE 8080
