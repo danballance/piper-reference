@@ -13,16 +13,19 @@ class FakeRepository:
             return list(self._items)
         return [i for i in self._items if i.done is done]
 
-    def add(self, item: TodoItem) -> list[TodoItem]:
-        self._items.append(item)
+    def add(self, todo: TodoItem) -> list[TodoItem]:
+        self._items.append(todo)
         return list(self._items)
 
-    def update(self, item_title: str, item: TodoItem) -> list[TodoItem]:
+    def update(self, todo_title: str, todo: TodoItem) -> list[TodoItem]:
         for idx, existing in enumerate(self._items):
-            if existing.title == item_title:
-                self._items[idx] = item
+            if existing.title == todo_title:
+                self._items[idx] = todo
                 return list(self._items)
-        raise KeyError(f"Todo item '{item_title}' not found")
+        raise KeyError(f"Todo item '{todo_title}' not found")
+
+    def clear(self) -> None:
+        self._items.clear()
 
 
 def test_service_get_all_delegates_to_repository() -> None:

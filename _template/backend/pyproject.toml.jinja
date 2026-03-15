@@ -114,9 +114,10 @@ dev = [
     "schemathesis>=4.10,<5.0",
     "import-linter>=2.7,<3.0",
     "ruff>=0.11,<1.0",
+    "ty>=0.0.1a0",
     "bandit>=1.8,<2.0",
     "vulture>=2.14,<3.0",
-    "complexipy>=0.7,<1.0",
+    "complexipy>=5.0,<6.0",
     "wemake-python-styleguide>=1.0,<2.0",
 ]
 
@@ -129,6 +130,7 @@ extend-exclude = [
 ]
 
 [tool.ruff.lint]
+external = ["WPS"]
 select = [
     "E", "F", "W", "I", "N", "UP", "S", "B", "A", "C4", "DTZ",
     "T10", "ISC", "ICN", "PIE", "PT", "RSE", "RET", "SLF", "SIM",

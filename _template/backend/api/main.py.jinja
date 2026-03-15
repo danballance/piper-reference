@@ -1,7 +1,7 @@
 from litestar import Litestar, get
+from litestar.di import Provide
 from litestar.logging import LoggingConfig
 from litestar.plugins.pydantic import PydanticInitPlugin
-from litestar.di import Provide
 
 from api.todo.application.services import TodoService
 from api.todo.infrastructure.memory_repo import InMemoryTodoRepository

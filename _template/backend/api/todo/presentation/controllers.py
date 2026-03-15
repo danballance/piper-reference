@@ -1,6 +1,6 @@
 from litestar import Controller, delete, get, post, put
 from litestar.exceptions import NotFoundException
-from litestar.status_codes import HTTP_201_CREATED
+from litestar.status_codes import HTTP_201_CREATED, HTTP_204_NO_CONTENT
 
 from api.todo.application.protocols import TodoServiceProtocol
 from api.todo.domain.models import TodoItem
@@ -34,10 +34,10 @@ class TodoController(Controller):
     ) -> list[TodoItem]:
         try:
             return service.update(todo_title, data)
-        except KeyError:
-            raise NotFoundException(detail=f"Todo '{todo_title}' not found")
+        except KeyError as err:
+            raise NotFoundException(detail=f"Todo '{todo_title}' not found") from err
 
-    @delete(status_code=204)
+    @delete(status_code=HTTP_204_NO_CONTENT)
     async def clear_items(
         self,
         service: TodoServiceProtocol,

@@ -24,7 +24,7 @@ run_check() {
 cd "$DIR"
 
 # --- fast tier (always runs) ---
-run_check "format" npx biome format --check .
+run_check "format" npx biome format .
 run_check "lint"   npx biome lint .
 run_check "type"   npx tsc --noEmit
 
