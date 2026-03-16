@@ -1,4 +1,4 @@
-name: Template CI & Publish
+name: CI & Publish
 
 on:
   push:
@@ -19,31 +19,24 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Configure git for private packages
         run: git config --global url."https://x-access-token:${{ secrets.PRIVATE_REPO_TOKEN }}@github.com/".insteadOf "https://github.com/"
-
-      - name: Generate project from template
-        run: |
-          pip install 'copier>=9,<10'
-          copier copy --defaults --trust --vcs-ref HEAD ./ ./build
 
       - name: Install uv
         uses: astral-sh/setup-uv@v4
 
       - name: Install backend dependencies
-        run: cd ./build/backend && uv sync --frozen
+        run: cd backend && uv sync --frozen
 
       - name: Run backend linting
-        run: bash ./build/.claude/scripts/lint-py.sh fast ./build/backend
+        run: bash .claude/scripts/lint-py.sh fast backend
 
       - name: Run backend tests
-        run: cd ./build/backend && uv run pytest -m "not schemathesis" -v
+        run: cd backend && uv run pytest -m "not schemathesis" -v
 
       - name: Run backend schema tests
-        run: cd ./build/backend && uv run pytest -m schemathesis -v
+        run: cd backend && uv run pytest -m schemathesis -v
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4
@@ -55,26 +48,26 @@ jobs:
         with:
           node-version: 22
           cache: pnpm
-          cache-dependency-path: ./build/ui/pnpm-lock.yaml
+          cache-dependency-path: ui/pnpm-lock.yaml
 
       - name: Install frontend dependencies
-        run: cd ./build/ui && pnpm install --frozen-lockfile
+        run: cd ui && pnpm install --frozen-lockfile
 
       - name: Run frontend linting
-        run: bash ./build/.claude/scripts/lint-ts.sh fast ./build/ui
+        run: bash .claude/scripts/lint-ts.sh fast ui
 
       - name: Install Playwright browsers
-        run: cd ./build/ui && pnpm exec playwright install --with-deps chromium
+        run: cd ui && pnpm exec playwright install --with-deps chromium
 
       - name: Run frontend unit tests
-        run: cd ./build/ui && pnpm test
+        run: cd ui && pnpm test
 
       - name: Start Docker Compose stack
-        run: docker compose -f ./build/docker-compose.yml up -d --wait --wait-timeout 120 api ui
+        run: docker compose up -d --wait --wait-timeout 120 api ui
         timeout-minutes: 5
 
       - name: Run E2E tests
-        run: docker compose -f ./build/docker-compose.yml --profile test run --rm playwright
+        run: docker compose --profile test run --rm playwright
         timeout-minutes: 5
 
       - name: Upload Playwright report
@@ -82,13 +75,13 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: playwright-report
-          path: ./build/ui/playwright-report/
+          path: ui/playwright-report/
           retention-days: 7
           if-no-files-found: ignore
 
       - name: Stop Docker Compose stack
         if: always()
-        run: docker compose -f ./build/docker-compose.yml down -v --remove-orphans
+        run: docker compose down -v --remove-orphans
 
   publish-backend:
     needs: validate
@@ -102,16 +95,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Configure git for private packages
         run: git config --global url."https://x-access-token:${{ secrets.PRIVATE_REPO_TOKEN }}@github.com/".insteadOf "https://github.com/"
-
-      - name: Generate project from template
-        run: |
-          pip install 'copier>=9,<10'
-          copier copy --defaults --trust --vcs-ref HEAD ./ ./build
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -140,7 +126,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
-          context: ./build/backend
+          context: ./backend
           platforms: linux/amd64,linux/arm64
           push: true
           tags: ${{ steps.meta.outputs.tags }}
@@ -160,16 +146,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Configure git for private packages
         run: git config --global url."https://x-access-token:${{ secrets.PRIVATE_REPO_TOKEN }}@github.com/".insteadOf "https://github.com/"
-
-      - name: Generate project from template
-        run: |
-          pip install 'copier>=9,<10'
-          copier copy --defaults --trust --vcs-ref HEAD ./ ./build
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -198,8 +177,8 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
-          context: ./build
-          file: ./build/ui/Dockerfile
+          context: .
+          file: ./ui/Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
           tags: ${{ steps.meta.outputs.tags }}

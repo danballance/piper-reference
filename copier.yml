@@ -2,13 +2,6 @@ _min_copier_version: "9.0.0"
 
 _subdirectory: _template
 
-_tasks:
-  - >-
-    "{{ _copier_python }}"
-    "{{ _copier_conf.src_path }}/scripts/copy_ci_workflow.py"
-    "{{ _copier_conf.src_path }}"
-    "{{ _copier_conf.dst_path }}"
-
 _exclude:
   - "{% if not include_nix_devenv %}.envrc{% endif %}"
   - "{% if not include_nix_devenv %}devenv.nix{% endif %}"
