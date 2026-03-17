@@ -35,17 +35,17 @@ fi
 
 # Circuit breaker
 if [ "$COUNT" -ge "$MAX_ATTEMPTS" ]; then
-  echo "⚠️ Lint issues remain after ${MAX_ATTEMPTS} attempts. Allowing completion."
-  echo ""
-  echo -e "$COMBINED"
-  echo "Please note these unresolved issues for the user."
+  echo "⚠️ Lint issues remain after ${MAX_ATTEMPTS} attempts. Allowing completion." >&2
+  echo "" >&2
+  echo -e "$COMBINED" >&2
+  echo "Please note these unresolved issues for the user." >&2
   echo "0" > "$STATE_FILE"
   exit 0
 else
   REMAINING=$((MAX_ATTEMPTS - COUNT))
-  echo "🚫 Pre-completion lint check FAILED (attempt ${COUNT}/${MAX_ATTEMPTS})"
-  echo ""
-  echo -e "$COMBINED"
-  echo "You must fix these issues before completing. ${REMAINING} attempt(s) remaining."
-  exit 1
+  echo "🚫 Pre-completion lint check FAILED (attempt ${COUNT}/${MAX_ATTEMPTS})" >&2
+  echo "" >&2
+  echo -e "$COMBINED" >&2
+  echo "You must fix these issues before completing. ${REMAINING} attempt(s) remaining." >&2
+  exit 2
 fi

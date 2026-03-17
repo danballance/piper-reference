@@ -24,15 +24,15 @@ run_check() {
 cd "$DIR"
 
 # --- fast tier (always runs) ---
-run_check "format" npx biome format .
-run_check "lint"   npx biome lint .
-run_check "type"   npx tsc --noEmit
+run_check "format" pnpm exec biome format .
+run_check "lint"   pnpm exec biome lint .
+run_check "type"   pnpm exec tsc --noEmit
 
 if [ "$TIER" = "fast" ]; then
   exit $((FAILED * 2))
 fi
 
 # --- full tier ---
-run_check "deadcode" npx knip
+run_check "deadcode" pnpm exec knip
 
 exit $((FAILED * 2))
