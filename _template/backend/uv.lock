@@ -970,7 +970,7 @@ wheels = [
 ]
 
 [[package]]
-name = "piper-reference"
+name = "{{ project_name }}"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [

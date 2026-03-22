@@ -1,37 +1,30 @@
 {
   "phases": [
     {
-      "name": "research",
-      "label": "Research",
+      "name": "planning",
+      "label": "Planning",
       "requires": [],
-      "confirm": true,
-      "skill": "research"
-    },
-    {
-      "name": "design",
-      "label": "Design",
-      "requires": ["research"],
-      "confirm": false,
-      "skill": "design"
-    },
-    {
-      "name": "plan",
-      "label": "Plan",
-      "requires": ["research"],
       "confirm": true,
       "skill": "planning"
     },
     {
-      "name": "implement",
+      "name": "test-creation",
+      "label": "Test Creation",
+      "requires": ["planning"],
+      "confirm": true,
+      "skill": "test-creation"
+    },
+    {
+      "name": "implementation",
       "label": "Implementation",
-      "requires": ["plan"],
+      "requires": ["test-creation"],
       "confirm": false,
       "skill": "implementation"
     },
     {
-      "name": "docs",
+      "name": "documentation",
       "label": "Documentation",
-      "requires": ["implement"],
+      "requires": ["implementation"],
       "confirm": false,
       "skill": "documentation"
     }

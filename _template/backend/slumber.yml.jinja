@@ -17,17 +17,17 @@ profiles:
     data:
       host: http://localhost:8080
 
-{% raw %}
+
 requests:
   todo_list:
     name: List items
     method: GET
-    url: "{{ host }}/"
+    url: "/"
   todo_create:
     name: Create item
     method: POST
-    url: "{{ host }}/"
+    url: "/"
     body:
       type: json
       data: { "title": "Item One", "done": false }
-{% endraw %}
+
