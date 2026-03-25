@@ -4,6 +4,7 @@ import { discoverProjectDir, loadConfig } from "./config";
 import { freshState, CUSTOM_ENTRY_TYPE, getPhase, buildSystemPrompt } from "./helpers";
 import { registerCommands } from "./commands";
 import { registerTools } from "./tools";
+import { writeHarnessStatus } from "./status";
 import type { HarnessContext, HarnessState } from "./types";
 
 export default function (pi: ExtensionAPI) {
@@ -19,6 +20,9 @@ export default function (pi: ExtensionAPI) {
     projectRoot,
     persistState() {
       pi.appendEntry(CUSTOM_ENTRY_TYPE, structuredClone(ctx.state));
+    },
+    writeStatus(summary = null) {
+      writeHarnessStatus(ctx.piedPiDir, ctx.state, summary);
     },
   };
   ctx.state.active = false;
