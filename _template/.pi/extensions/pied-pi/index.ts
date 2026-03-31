@@ -54,6 +54,19 @@ export default function (pi: ExtensionAPI) {
     };
   });
 
+  pi.on("agent_end", async (_event, uiCtx) => {
+    if (!ctx.state.active) return;
+
+    const phase = getPhase(config, ctx.state.currentPhase);
+    if (phase && uiCtx.hasUI) {
+      uiCtx.ui.setStatus("harness", phase.label);
+    }
+
+    ctx.pi.sendUserMessage(
+      `The harness is still active. Continue working on the current phase (${phase?.label ?? ctx.state.currentPhase}). Do not stop yet. Only finish when you have completed the phase deliverables and called harness_advance. If you need the phase instructions again, call harness_instructions.`,
+    );
+  });
+
   // ── Register commands & tools ──────────────────────────────────────
 
   registerCommands(ctx);
