@@ -6,6 +6,7 @@ import {
   isCircuitBroken,
   getStopAttempts,
   getMaxAttempts,
+  isHarnessActive,
 } from "./utils.js";
 
 interface LintResult {
@@ -44,6 +45,11 @@ function buildCircuitBreakerMessage(
 
 export function registerLintOnStop(pi: ExtensionAPI, projectRoot: string): void {
   pi.on("agent_end", async (_event, ctx) => {
+    if (isHarnessActive(ctx.sessionManager)) {
+      resetStopAttempts();
+      return;
+    }
+
     const attempt = incrementStopAttempts();
     const maxAttempts = getMaxAttempts();
 
@@ -84,7 +90,7 @@ export function registerLintOnStop(pi: ExtensionAPI, projectRoot: string): void 
         ctx.ui.notify(message, "error");
       }
 
-      pi.sendMessage(
+      await pi.sendMessage(
         {
           customType: "lint-guard",
           content: message,
@@ -105,7 +111,7 @@ export function registerLintOnStop(pi: ExtensionAPI, projectRoot: string): void 
 
     if (ctx.hasUI) ctx.ui.setStatus("lint-guard", "Stop lint failed; requesting fixes");
     const remaining = maxAttempts - getStopAttempts();
-    pi.sendUserMessage(
+    await pi.sendUserMessage(
       `Pre-completion lint check FAILED (attempt ${attempt}/${maxAttempts}).\n\n${combined}Fix these issues before completing. ${remaining} attempt(s) remaining.`,
       { deliverAs: "followUp" },
     );

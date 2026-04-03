@@ -59,8 +59,8 @@ continuing.
 
 **Lint on stop** — when the agent finishes its work, runs strict Python lint and
 full TypeScript lint. If either fails, the agent is sent back to fix the issues.
-A circuit breaker aborts the run after 3 failed stop-lint checks so the
-benchmark fails cleanly instead of hanging.
+A circuit breaker allows completion after 3 failed attempts to prevent infinite
+loops.
 
 ## Lint tiers
 
